@@ -1,4 +1,7 @@
-const API_BASE = '/api';
+const API_BASE = import.meta.env.VITE_API_URL || 
+  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:5000/api' 
+    : '/api');
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('skillswap_token');
@@ -16,16 +19,24 @@ const handleResponse = async (response) => {
   return data;
 };
 
+const getFullUrl = (endpoint, params = {}) => {
+  const isAbsolute = API_BASE.startsWith('http');
+  const url = isAbsolute 
+    ? new URL(`${API_BASE}${endpoint}`) 
+    : new URL(`${API_BASE}${endpoint}`, window.location.origin);
+
+  Object.keys(params).forEach(key => {
+    if (params[key] !== undefined && params[key] !== '') {
+      url.searchParams.append(key, params[key]);
+    }
+  });
+  return url.toString();
+};
+
 export const api = {
   get: async (endpoint, params = {}) => {
-    const url = new URL(`${API_BASE}${endpoint}`, window.location.origin);
-    Object.keys(params).forEach(key => {
-      if (params[key] !== undefined && params[key] !== '') {
-        url.searchParams.append(key, params[key]);
-      }
-    });
-
-    const res = await fetch(url.toString(), {
+    const fullUrl = getFullUrl(endpoint, params);
+    const res = await fetch(fullUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +47,8 @@ export const api = {
   },
 
   post: async (endpoint, body = {}) => {
-    const res = await fetch(`${API_BASE}${endpoint}`, {
+    const fullUrl = getFullUrl(endpoint);
+    const res = await fetch(fullUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,7 +60,8 @@ export const api = {
   },
 
   put: async (endpoint, body = {}) => {
-    const res = await fetch(`${API_BASE}${endpoint}`, {
+    const fullUrl = getFullUrl(endpoint);
+    const res = await fetch(fullUrl, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +73,8 @@ export const api = {
   },
 
   delete: async (endpoint) => {
-    const res = await fetch(`${API_BASE}${endpoint}`, {
+    const fullUrl = getFullUrl(endpoint);
+    const res = await fetch(fullUrl, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
