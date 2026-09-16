@@ -15,7 +15,14 @@ connectDB();
 
 // Middlewares
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl) or any localhost port
+    if (!origin || /^http:\/\/localhost:\d+$/.test(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true);
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
