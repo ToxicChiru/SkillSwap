@@ -1,0 +1,133 @@
+/* Responsive Media Queries */
+
+/* Tablet (1024px and below) */
+@media (max-width: 1024px) {
+  .section-large {
+    padding: 80px 0;
+  }
+
+  .hero-section {
+    padding: 80px 0 60px;
+  }
+
+  .features-container {
+    gap: 80px;
+  }
+
+  .feature {
+    gap: 40px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile Devices (768px and below) */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .navbar-pill {
+    padding: 0 1rem;
+    height: 52px;
+  }
+
+  .nav-links-desktop {
+    display: none !important;
+  }
+
+  .hero-section {
+    padding: 60px 0 40px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 10vw, 3.75rem);
+    letter-spacing: -0.04em;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-paragraph {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-actions {
+    margin-bottom: 3rem;
+  }
+
+  .features-container {
+    gap: 60px;
+  }
+
+  .feature, .feature.reverse {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    direction: ltr !important;
+  }
+
+  .feature-heading {
+    font-size: 2rem;
+  }
+
+  .mockup-body {
+    grid-template-columns: 1fr;
+  }
+
+  .mockup-sidebar {
+    display: none;
+  }
+
+  .grid-4, .grid-3, .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+
+  .site-footer {
+    border-radius: 28px 28px 0 0;
+    padding: 60px 0 30px;
+  }
+
+  .faq-section {
+    padding: 80px 0;
+  }
+
+  .logo-cloud-grid {
+    gap: 2rem;
+  }
+}
+
+/* Small Screens (480px and below) */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2.35rem;
+    line-height: 1;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .card, .glass-panel {
+    padding: 20px;
+  }
+
+  .mockup {
+    border-radius: 20px;
+  }
+}

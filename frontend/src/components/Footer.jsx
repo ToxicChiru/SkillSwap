@@ -1,111 +1,91 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Heart, Shield, Code2 } from 'lucide-react';
 
 export const Footer = () => {
   return (
-    <footer style={{
-      background: 'rgba(6, 10, 18, 0.95)',
-      borderTop: '1px solid var(--border-glass)',
-      padding: '3.5rem 0 2rem',
-      color: 'var(--text-secondary)',
-      fontSize: '0.875rem'
-    }}>
+    <footer className="site-footer">
       <div className="container">
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '2fr 1fr 1fr 1fr',
-          gap: '2.5rem',
-          marginBottom: '3rem'
-        }}>
-          {/* Column 1: Brand USP */}
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+        <div className="footer-grid">
+          {/* Brand Column */}
+          <div className="footer-brand">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
               <div style={{
                 width: '32px',
                 height: '32px',
                 borderRadius: '8px',
-                background: 'linear-gradient(135deg, #6366f1 0%, #06b6d4 100%)',
+                background: '#ffffff',
+                color: '#111111',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                fontWeight: '800',
                 fontSize: '1rem'
               }}>
                 ⚡
               </div>
-              <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: '800', color: '#fff' }}>
-                SkillSwap
-              </span>
+              <span className="footer-brand-title">SkillSwap</span>
             </div>
-            <p style={{ maxWidth: '320px', lineHeight: 1.6, marginBottom: '1rem' }}>
-              A student-driven peer-to-peer learning network. Teach what you know, learn what you need, and exchange skills instead of money.
+            <p className="footer-brand-desc">
+              The peer-to-peer knowledge network built for university students. Teach what you know, learn what you need, exchange skills instead of money.
             </p>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <span className="badge badge-indigo">🎓 College Centric</span>
-              <span className="badge badge-emerald">🪙 Zero Money</span>
-              <span className="badge badge-cyan">🤝 1:1 Mentorship</span>
+          </div>
+
+          {/* Navigation Column */}
+          <div className="footer-column">
+            <h4 className="footer-heading">Platform</h4>
+            <div className="footer-links">
+              <Link to="/discover" className="footer-link">Discover Skills</Link>
+              <Link to="/matches" className="footer-link">Smart Matches</Link>
+              <Link to="/leaderboard" className="footer-link">Campus Leaderboard</Link>
+              <Link to="/wallet" className="footer-link">SkillCoin Economy</Link>
             </div>
           </div>
 
-          {/* Column 2: Platform Links */}
-          <div>
-            <h4 style={{ color: '#fff', fontSize: '0.95rem', marginBottom: '1rem' }}>Platform</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-              <Link to="/discover" style={{ color: 'var(--text-secondary)' }}>Discover Skills</Link>
-              <Link to="/matches" style={{ color: 'var(--text-secondary)' }}>Smart Matches</Link>
-              <Link to="/leaderboard" style={{ color: 'var(--text-secondary)' }}>Campus Leaderboard</Link>
-              <Link to="/wallet" style={{ color: 'var(--text-secondary)' }}>SkillCoin Economy</Link>
+          {/* Categories Column */}
+          <div className="footer-column">
+            <h4 className="footer-heading">Categories</h4>
+            <div className="footer-links">
+              <Link to="/discover?category=Programming" className="footer-link">Programming</Link>
+              <Link to="/discover?category=Design" className="footer-link">UI/UX & Design</Link>
+              <Link to="/discover?category=AI%20/%20ML" className="footer-link">AI & Machine Learning</Link>
+              <Link to="/discover?category=Communication" className="footer-link">Communication</Link>
             </div>
           </div>
 
-          {/* Column 3: Skill Categories */}
-          <div>
-            <h4 style={{ color: '#fff', fontSize: '0.95rem', marginBottom: '1rem' }}>Categories</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-              <Link to="/discover?category=Programming" style={{ color: 'var(--text-secondary)' }}>Programming</Link>
-              <Link to="/discover?category=Design" style={{ color: 'var(--text-secondary)' }}>UI/UX & Design</Link>
-              <Link to="/discover?category=AI%20/%20ML" style={{ color: 'var(--text-secondary)' }}>AI & Machine Learning</Link>
-              <Link to="/discover?category=Communication" style={{ color: 'var(--text-secondary)' }}>Communication</Link>
-            </div>
-          </div>
-
-          {/* Column 4: Rule Summary */}
-          <div>
-            <h4 style={{ color: '#fff', fontSize: '0.95rem', marginBottom: '1rem' }}>SkillCoin Rule</h4>
+          {/* System Rules */}
+          <div className="footer-column">
+            <h4 className="footer-heading">Core Rule</h4>
             <div style={{
-              background: 'rgba(15, 23, 42, 0.6)',
-              padding: '1rem',
-              borderRadius: '12px',
-              border: '1px solid var(--border-glass)'
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '16px',
+              padding: '1.25rem'
             }}>
-              <div style={{ color: '#34d399', fontWeight: '700', marginBottom: '0.35rem' }}>
-                +10 Coins / Hour
+              <div style={{ color: '#34d399', fontWeight: '600', fontSize: '0.85rem', marginBottom: '0.25rem' }}>
+                +10 SkillCoins / Hour
               </div>
-              <p style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>Earned whenever you mentor a fellow college peer.</p>
-              <div style={{ color: '#fbbf24', fontWeight: '700', marginBottom: '0.35rem' }}>
-                -10 Coins / Hour
+              <p style={{ fontSize: '0.78rem', color: '#8a8f98', marginBottom: '0.75rem' }}>
+                Earned for teaching peers.
+              </p>
+              <div style={{ color: '#fbbf24', fontWeight: '600', fontSize: '0.85rem', marginBottom: '0.25rem' }}>
+                -10 SkillCoins / Hour
               </div>
-              <p style={{ fontSize: '0.75rem' }}>Spent when learning a new skill from a peer.</p>
+              <p style={{ fontSize: '0.78rem', color: '#8a8f98' }}>
+                Invested to learn new skills.
+              </p>
             </div>
           </div>
         </div>
 
-        <div style={{
-          paddingTop: '2rem',
-          borderTop: '1px solid var(--border-glass)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '1rem'
-        }}>
+        {/* Bottom Legal & Socials */}
+        <div className="footer-bottom">
           <div>
-            © {new Date().getFullYear()} SkillSwap Network. Built for College Students Worldwide.
+            © {new Date().getFullYear()} SkillSwap Network. All rights reserved. Built for universities worldwide.
           </div>
-          <div style={{ display: 'flex', gap: '1.5rem' }}>
-            <span>Verified Campus Protocol</span>
-            <span>Privacy Policy</span>
-            <span>Terms of Swap</span>
+          <div className="footer-socials">
+            <span className="footer-social-link">Terms</span>
+            <span className="footer-social-link">Privacy</span>
+            <span className="footer-social-link">Code of Conduct</span>
           </div>
         </div>
       </div>

@@ -1,37 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { api } from '../services/api';
-import { SkillCard } from '../components/SkillCard';
 import { 
   Sparkles, 
-  ArrowLeftRight, 
+  ArrowRight, 
+  CheckCircle2, 
   Coins, 
-  CheckCircle, 
-  GraduationCap, 
+  Calendar, 
   Star, 
+  Video, 
+  Plus, 
+  ShieldCheck, 
   Users, 
-  TrendingUp, 
-  Zap,
-  ArrowRight
+  Clock 
 } from 'lucide-react';
 
 export const Home = () => {
   const { isAuthenticated, demoLogin } = useAuth();
   const navigate = useNavigate();
-  const [popularSkills, setPopularSkills] = useState([]);
 
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const data = await api.get('/skills?popular=true');
-        setPopularSkills((data.skills || []).slice(0, 8));
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchSkills();
-  }, []);
+  // FAQ open state
+  const [openFaq, setOpenFaq] = useState(0);
 
   const handleQuickDemo = async (email) => {
     try {
@@ -42,430 +31,447 @@ export const Home = () => {
     }
   };
 
+  const faqItems = [
+    {
+      q: "How does the SkillCoin virtual credit system operate?",
+      a: "SkillCoins are purely virtual credits designed to facilitate reciprocal learning without real money. Every new student receives 50 bonus coins upon registration. Whenever you mentor a peer for 1 hour, you earn +10 SkillCoins. Whenever you learn from a peer, 10 SkillCoins are transferred to your tutor once the session is marked completed."
+    },
+    {
+      q: "Is SkillSwap completely free for college students?",
+      a: "Yes. SkillSwap is 100% free. The core principle is 'Teach what you know, learn what you need, exchange skills instead of money.' You never have to connect a credit card or pay subscription fees."
+    },
+    {
+      q: "How does the matching algorithm determine compatibility scores?",
+      a: "Our algorithm calculates compatibility using a 5-factor weighted scoring formula: Skill Compatibility (50% for reciprocal teaching/learning overlap), Skill Proficiency Level (20% for Advanced/Expert depth), Weekly Availability (15% for matching slots), College & Department (10% for campus familiarity), and Peer Rating (5% based on verified reviews)."
+    },
+    {
+      q: "Can I teach multiple skills or learn multiple topics simultaneously?",
+      a: "Absolutely. Students can add as many teaching skills with proficiency levels (Beginner, Intermediate, Advanced, Expert) and learning wishlist topics as they desire. The matching algorithm continuously scans for all your active preferences."
+    },
+    {
+      q: "How are sessions conducted?",
+      a: "When a swap request is accepted, either student can schedule a 1-hour session by selecting a date, time slot, and meeting link (such as Google Meet or a campus study room). Upon session completion, both participants verify the exchange and leave multi-criteria reviews."
+    }
+  ];
+
   return (
-    <div style={{ position: 'relative', overflow: 'hidden' }}>
+    <div style={{ position: 'relative' }}>
+      {/* Background ambient glow */}
+      <div className="glow" style={{ top: '-100px', left: '50%', transform: 'translateX(-50%)' }} />
+
       {/* Hero Section */}
-      <section style={{
-        padding: '5rem 0 6rem',
-        textAlign: 'center',
-        position: 'relative'
-      }}>
-        <div className="container">
-          {/* Tag Pill */}
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            background: 'rgba(99, 102, 241, 0.15)',
-            border: '1px solid rgba(99, 102, 241, 0.3)',
-            borderRadius: '9999px',
-            padding: '0.4rem 1rem',
-            color: '#818cf8',
-            fontSize: '0.85rem',
-            fontWeight: '700',
-            marginBottom: '1.75rem',
-            animation: 'fadeIn 0.5s ease-out'
-          }}>
-            <Sparkles size={16} /> Campus Peer-to-Peer Learning Network
+      <section className="hero-section">
+        <div className="container hero-container">
+          {/* Eyebrow */}
+          <div className="eyebrow hero-eyebrow">
+            <span>⚡ Peer-to-Peer Knowledge Exchange</span>
           </div>
 
-          {/* Main Headline */}
-          <h1 style={{
-            fontSize: '3.5rem',
-            fontWeight: '800',
-            lineHeight: 1.15,
-            maxWidth: '900px',
-            margin: '0 auto 1.5rem',
-            letterSpacing: '-0.03em'
-          }}>
-            Teach what you know.{' '}
-            <span style={{
-              background: 'linear-gradient(135deg, #6366f1 0%, #06b6d4 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              Learn what you need.
-            </span>
+          {/* Editorial Display Heading */}
+          <h1 className="hero-title">
+            Teach what you know.<br />
+            <em>Learn what you need.</em>
           </h1>
 
-          <p style={{
-            fontSize: '1.25rem',
-            maxWidth: '680px',
-            margin: '0 auto 2.5rem',
-            color: 'var(--text-secondary)',
-            lineHeight: 1.6
-          }}>
-            Exchange skills instead of money. Connect with students on your campus and beyond, 
-            schedule 1:1 learning sessions, earn virtual <strong>SkillCoins</strong>, and accelerate your practical knowledge.
+          {/* Supporting Paragraph */}
+          <p className="hero-paragraph">
+            A peer-driven exchange platform for university students. Exchange practical skills without money, 
+            earn virtual SkillCoins, and learn directly from campus peers.
           </p>
 
           {/* CTA Buttons */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '1rem',
-            flexWrap: 'wrap',
-            marginBottom: '3rem'
-          }}>
+          <div className="hero-actions">
             {isAuthenticated ? (
-              <Link to="/dashboard" className="btn btn-primary btn-lg">
-                Go to Student Dashboard <ArrowRight size={18} />
+              <Link to="/dashboard" className="btn btn-primary btn-lg btn-pill">
+                Go to Student Dashboard <ArrowRight size={16} />
               </Link>
             ) : (
               <>
-                <Link to="/register" className="btn btn-primary btn-lg">
-                  Join Your Campus <ArrowRight size={18} />
+                <Link to="/register" className="btn btn-primary btn-lg btn-pill">
+                  Get Started Free <ArrowRight size={16} />
                 </Link>
-                <Link to="/discover" className="btn btn-secondary btn-lg">
-                  Browse Skills Directory
+                <Link to="/discover" className="btn btn-secondary btn-lg btn-pill">
+                  Explore Skills Catalog
                 </Link>
               </>
             )}
           </div>
 
-          {/* Quick Demo Login Bar for Evaluators */}
+          {/* 1-Click Demo Login Bar */}
           {!isAuthenticated && (
             <div style={{
-              maxWidth: '640px',
-              margin: '0 auto',
-              background: 'rgba(15, 23, 42, 0.75)',
-              border: '1px dashed var(--border-glass-hover)',
-              borderRadius: '16px',
-              padding: '1.25rem',
-              backdropFilter: 'blur(12px)'
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-pill)',
+              padding: '0.5rem 1.25rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.6rem',
+              boxShadow: 'var(--shadow-subtle)',
+              marginBottom: '4.5rem',
+              flexWrap: 'wrap',
+              justifyContent: 'center'
             }}>
-              <div style={{ fontSize: '0.85rem', fontWeight: '700', color: '#cbd5e1', marginBottom: '0.75rem' }}>
-                🚀 Try Instant Demo Accounts (1-Click Test Login):
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-                <button
-                  onClick={() => handleQuickDemo('aditya.python@college.edu')}
-                  className="btn btn-secondary btn-sm"
-                  style={{ border: '1px solid rgba(99, 102, 241, 0.4)', color: '#818cf8' }}
-                >
-                  👨‍💻 Aditya (Python/React)
-                </button>
-                <button
-                  onClick={() => handleQuickDemo('ananya.design@college.edu')}
-                  className="btn btn-secondary btn-sm"
-                  style={{ border: '1px solid rgba(6, 182, 212, 0.4)', color: '#22d3ee' }}
-                >
-                  🎨 Ananya (Figma/UI)
-                </button>
-                <button
-                  onClick={() => handleQuickDemo('rahul.ai@college.edu')}
-                  className="btn btn-secondary btn-sm"
-                  style={{ border: '1px solid rgba(16, 185, 129, 0.4)', color: '#34d399' }}
-                >
-                  🤖 Rahul (AI/ML)
-                </button>
-                <button
-                  onClick={() => handleQuickDemo('admin@skillswap.edu')}
-                  className="btn btn-secondary btn-sm"
-                  style={{ border: '1px solid rgba(244, 63, 94, 0.4)', color: '#fb7185' }}
-                >
-                  🛡️ Campus Admin
-                </button>
-              </div>
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Instant Test Logins:
+              </span>
+              <button
+                type="button"
+                onClick={() => handleQuickDemo('aditya.python@college.edu')}
+                className="btn btn-secondary btn-sm btn-pill"
+              >
+                👨‍💻 Aditya (Python)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickDemo('ananya.design@college.edu')}
+                className="btn btn-secondary btn-sm btn-pill"
+              >
+                🎨 Ananya (Figma)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickDemo('rahul.ai@college.edu')}
+                className="btn btn-secondary btn-sm btn-pill"
+              >
+                🤖 Rahul (AI/ML)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickDemo('admin@skillswap.edu')}
+                className="btn btn-secondary btn-sm btn-pill"
+                style={{ color: 'var(--accent-rose)' }}
+              >
+                🛡️ Admin
+              </button>
             </div>
           )}
-        </div>
-      </section>
 
-      {/* Live Campus Metrics Strip */}
-      <section style={{
-        background: 'rgba(14, 22, 38, 0.6)',
-        borderTop: '1px solid var(--border-glass)',
-        borderBottom: '1px solid var(--border-glass)',
-        padding: '2.5rem 0'
-      }}>
-        <div className="container">
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '2rem',
-            textAlign: 'center'
-          }}>
-            <div>
-              <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#818cf8', fontFamily: 'var(--font-heading)' }}>
-                650+
+          {/* Large Elevated CSS Product Mockup */}
+          <div className="hero-mockup-wrapper">
+            <div className="mockup">
+              {/* Browser Header */}
+              <div className="mockup-header">
+                <div className="mockup-controls">
+                  <div className="mockup-dot" style={{ background: '#ff5f56' }} />
+                  <div className="mockup-dot" style={{ background: '#ffbd2e' }} />
+                  <div className="mockup-dot" style={{ background: '#27c93f' }} />
+                </div>
+                <div className="mockup-url-bar">
+                  skillswap.edu/dashboard
+                </div>
               </div>
-              <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
-                Active College Peers
-              </div>
-            </div>
-            <div>
-              <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#22d3ee', fontFamily: 'var(--font-heading)' }}>
-                85+
-              </div>
-              <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
-                Skills Offered
-              </div>
-            </div>
-            <div>
-              <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#34d399', fontFamily: 'var(--font-heading)' }}>
-                1,420 hrs
-              </div>
-              <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
-                Peer Learning Exchanged
-              </div>
-            </div>
-            <div>
-              <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#fbbf24', fontFamily: 'var(--font-heading)' }}>
-                4.9 ⭐
-              </div>
-              <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
-                Average Peer Rating
+
+              {/* Mockup Dashboard Content */}
+              <div className="mockup-body">
+                {/* Sidebar */}
+                <div className="mockup-sidebar">
+                  <div className="mockup-nav-item active">
+                    <span>⚡</span> Dashboard
+                  </div>
+                  <div className="mockup-nav-item">
+                    <span>✨</span> Smart Matches
+                  </div>
+                  <div className="mockup-nav-item">
+                    <span>📅</span> Sessions
+                  </div>
+                  <div className="mockup-nav-item">
+                    <span>🪙</span> Wallet
+                  </div>
+                  <div className="mockup-nav-item">
+                    <span>🏆</span> Leaderboard
+                  </div>
+                </div>
+
+                {/* Main View */}
+                <div className="mockup-main">
+                  {/* Top Bar */}
+                  <div className="mockup-top-banner">
+                    <div>
+                      <h3 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-sans)', fontWeight: '600' }}>
+                        Welcome back, Aditya Verma
+                      </h3>
+                      <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                        National Institute of Technology • Semester 6
+                      </p>
+                    </div>
+                    <div className="coin-pill">
+                      <span>🪙</span> 120 SkillCoins
+                    </div>
+                  </div>
+
+                  {/* 3 Metric Cards */}
+                  <div className="mockup-stats-row">
+                    <div className="mockup-stat-box">
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '600' }}>
+                        Teaching Hours
+                      </span>
+                      <div style={{ fontSize: '1.75rem', fontWeight: '700', color: 'var(--text)', marginTop: '0.25rem' }}>
+                        18 hrs
+                      </div>
+                    </div>
+                    <div className="mockup-stat-box">
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '600' }}>
+                        Completed Swaps
+                      </span>
+                      <div style={{ fontSize: '1.75rem', fontWeight: '700', color: 'var(--text)', marginTop: '0.25rem' }}>
+                        18
+                      </div>
+                    </div>
+                    <div className="mockup-stat-box">
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '600' }}>
+                        Campus Rating
+                      </span>
+                      <div style={{ fontSize: '1.75rem', fontWeight: '700', color: 'var(--text)', marginTop: '0.25rem' }}>
+                        4.9 ⭐
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bilateral Match Showcase inside Mockup */}
+                  <div className="mockup-match-preview">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <img
+                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100"
+                        alt="Ananya"
+                        style={{ width: '44px', height: '44px', borderRadius: '50%', objectFit: 'cover' }}
+                      />
+                      <div>
+                        <strong style={{ fontSize: '0.925rem', color: 'var(--text)' }}>Ananya Sharma</strong>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>
+                          Teaches: Figma, UI/UX • Wants: Python, React
+                        </span>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <span className="badge badge-emerald" style={{ fontWeight: '700' }}>
+                        96% Compatibility
+                      </span>
+                      <span className="btn btn-primary btn-sm btn-pill">
+                        Swap Proposed ✓
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* The Core Concept / USP Section */}
-      <section style={{ padding: '6rem 0' }}>
+      {/* Understated Monochrome Logo Cloud */}
+      <section className="logo-cloud-section">
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <span className="badge badge-emerald" style={{ marginBottom: '0.75rem' }}>
-              The Zero-Money Skill Economy
+          <div className="logo-cloud-label">
+            Adopted by students across leading academic institutions
+          </div>
+          <div className="logo-cloud-grid">
+            <span className="logo-item">MIT</span>
+            <span className="logo-item">STANFORD</span>
+            <span className="logo-item">UC BERKELEY</span>
+            <span className="logo-item">OXFORD</span>
+            <span className="logo-item">CAMBRIDGE</span>
+            <span className="logo-item">IIT</span>
+            <span className="logo-item">ETH ZÜRICH</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Alternating Two-Column Features */}
+      <section className="section-large">
+        <div className="container">
+          <div className="features-container">
+            {/* Feature 1 */}
+            <div className="feature">
+              <div className="feature-text">
+                <span className="eyebrow" style={{ marginBottom: '1rem' }}>
+                  Smart Matching
+                </span>
+                <h2 className="feature-heading">
+                  Find peers who want what you teach, and teach what you need.
+                </h2>
+                <p className="feature-description">
+                  Our multi-factor algorithmic engine evaluates reciprocal skills, proficiency levels, 
+                  weekly availability schedules, and academic department overlap to connect you with your ideal study partner.
+                </p>
+                <Link to="/matches" className="btn btn-secondary btn-pill">
+                  Explore Algorithmic Matches <ArrowRight size={15} />
+                </Link>
+              </div>
+
+              <div className="feature-visual">
+                <div className="card" style={{ padding: '2rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                    <h4 style={{ fontSize: '1.1rem' }}>Scoring Breakdown</h4>
+                    <span className="badge badge-emerald">96% Overall</span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.875rem' }}>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                        <span>Skill Overlap</span>
+                        <strong>50 / 50%</strong>
+                      </div>
+                      <div style={{ height: '6px', background: 'var(--surface-secondary)', borderRadius: '3px', overflow: 'hidden' }}>
+                        <div style={{ width: '100%', height: '100%', background: 'var(--text)' }} />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                        <span>Skill Level Depth</span>
+                        <strong>20 / 20%</strong>
+                      </div>
+                      <div style={{ height: '6px', background: 'var(--surface-secondary)', borderRadius: '3px', overflow: 'hidden' }}>
+                        <div style={{ width: '100%', height: '100%', background: 'var(--text)' }} />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                        <span>Availability Schedule</span>
+                        <strong>15 / 15%</strong>
+                      </div>
+                      <div style={{ height: '6px', background: 'var(--surface-secondary)', borderRadius: '3px', overflow: 'hidden' }}>
+                        <div style={{ width: '100%', height: '100%', background: 'var(--text)' }} />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                        <span>Campus & Department</span>
+                        <strong>10 / 10%</strong>
+                      </div>
+                      <div style={{ height: '6px', background: 'var(--surface-secondary)', borderRadius: '3px', overflow: 'hidden' }}>
+                        <div style={{ width: '100%', height: '100%', background: 'var(--text)' }} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Feature 2 (Reverse) */}
+            <div className="feature reverse">
+              <div className="feature-text">
+                <span className="eyebrow" style={{ marginBottom: '1rem' }}>
+                  SkillCoin Economy
+                </span>
+                <h2 className="feature-heading">
+                  Earn credits for teaching. Spend them to master new tools.
+                </h2>
+                <p className="feature-description">
+                  Every hour you spend mentoring a fellow student credits your wallet with +10 SkillCoins. 
+                  Redeem those credits to book 1-on-1 practical sessions with experienced peers.
+                </p>
+                <Link to="/wallet" className="btn btn-secondary btn-pill">
+                  View SkillCoin Ledger <ArrowRight size={15} />
+                </Link>
+              </div>
+
+              <div className="feature-visual">
+                <div className="card" style={{ padding: '2rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                    <h4 style={{ fontSize: '1.1rem' }}>Recent Ledger Activity</h4>
+                    <span className="coin-pill">🪙 Balance: 120</span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.85rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--surface-secondary)', borderRadius: '10px' }}>
+                      <span>Taught Python to Ananya</span>
+                      <strong style={{ color: 'var(--accent-emerald)' }}>+10 🪙</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--surface-secondary)', borderRadius: '10px' }}>
+                      <span>Learned Figma from Ananya</span>
+                      <strong style={{ color: 'var(--accent-rose)' }}>-10 🪙</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: 'var(--surface-secondary)', borderRadius: '10px' }}>
+                      <span>Taught React to Rahul</span>
+                      <strong style={{ color: 'var(--accent-emerald)' }}>+10 🪙</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="feature">
+              <div className="feature-text">
+                <span className="eyebrow" style={{ marginBottom: '1rem' }}>
+                  Structured Sessions
+                </span>
+                <h2 className="feature-heading">
+                  Schedule, meet, and build verified campus reputation.
+                </h2>
+                <p className="feature-description">
+                  Lock in mutually agreed session agendas, connect through integrated Google Meet rooms, 
+                  and receive ratings across Knowledge, Communication, and Punctuality.
+                </p>
+                <Link to="/leaderboard" className="btn btn-secondary btn-pill">
+                  Browse Campus Leaderboard <ArrowRight size={15} />
+                </Link>
+              </div>
+
+              <div className="feature-visual">
+                <div className="card" style={{ padding: '2rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                    <div>
+                      <span className="badge badge-indigo" style={{ marginBottom: '0.35rem' }}>Scheduled Session</span>
+                      <h4 style={{ fontSize: '1.15rem' }}>React.js Architecture</h4>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Tomorrow at 19:00 • 1 Hour</span>
+                    </div>
+                    <span className="badge badge-emerald">Verified</span>
+                  </div>
+
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
+                    "Focus on Custom Hooks, Context API, and modern state optimization."
+                  </p>
+
+                  <div style={{ display: 'flex', gap: '0.75rem' }}>
+                    <span className="btn btn-secondary btn-sm btn-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <Video size={14} /> Google Meet Room
+                    </span>
+                    <span className="btn btn-primary btn-sm btn-pill">
+                      Review Pending
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Minimalist FAQ Accordion Section */}
+      <section className="faq-section">
+        <div className="container faq-container">
+          <div className="faq-header">
+            <span className="eyebrow" style={{ marginBottom: '1rem' }}>
+              Common Inquiries
             </span>
-            <h2>How the SkillSwap Ecosystem Works</h2>
-            <p style={{ maxWidth: '600px', margin: '0.75rem auto 0' }}>
-              Students are simultaneously teachers and learners. Our algorithmic engine matches complementary skills so you can learn without paying a single dollar.
+            <h2 className="section-title">Frequently Asked Questions</h2>
+            <p className="section-subtitle">
+              Everything you need to know about peer skill exchange on campus.
             </p>
           </div>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '1.5rem'
-          }}>
-            {/* Step 1 */}
-            <div className="glass-panel" style={{ padding: '2rem 1.5rem', position: 'relative' }}>
-              <div style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '12px',
-                background: 'rgba(99, 102, 241, 0.15)',
-                color: '#818cf8',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-                fontWeight: '800',
-                marginBottom: '1.25rem'
-              }}>
-                1
-              </div>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>List Your Skills</h3>
-              <p style={{ fontSize: '0.875rem' }}>
-                Specify what you can teach (e.g. Python, React) and what you want to learn (e.g. Figma, UI/UX).
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="glass-panel" style={{ padding: '2rem 1.5rem', position: 'relative' }}>
-              <div style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '12px',
-                background: 'rgba(6, 182, 212, 0.15)',
-                color: '#22d3ee',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-                fontWeight: '800',
-                marginBottom: '1.25rem'
-              }}>
-                2
-              </div>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Smart Match</h3>
-              <p style={{ fontSize: '0.875rem' }}>
-                Our 5-factor matching algorithm pairs you with students who want what you teach and teach what you need.
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="glass-panel" style={{ padding: '2rem 1.5rem', position: 'relative' }}>
-              <div style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '12px',
-                background: 'rgba(16, 185, 129, 0.15)',
-                color: '#34d399',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-                fontWeight: '800',
-                marginBottom: '1.25rem'
-              }}>
-                3
-              </div>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>1:1 Sessions</h3>
-              <p style={{ fontSize: '0.875rem' }}>
-                Send swap proposals, agree on an agenda, and schedule 1-hour sessions with Google Meet integration.
-              </p>
-            </div>
-
-            {/* Step 4 */}
-            <div className="glass-panel" style={{ padding: '2rem 1.5rem', position: 'relative' }}>
-              <div style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '12px',
-                background: 'rgba(245, 158, 11, 0.15)',
-                color: '#fbbf24',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-                fontWeight: '800',
-                marginBottom: '1.25rem'
-              }}>
-                4
-              </div>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>SkillCoins & Badges</h3>
-              <p style={{ fontSize: '0.875rem' }}>
-                Earn +10 SkillCoins for teaching, spend 10 coins to learn, collect verified ratings, and top the leaderboard.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Reciprocal Bilateral Swap Showcase (Aditya ↔ Ananya) */}
-      <section style={{ padding: '0 0 6rem' }}>
-        <div className="container">
-          <div className="glass-panel" style={{
-            padding: '3rem',
-            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 27, 75, 0.5) 100%)',
-            border: '1px solid rgba(99, 102, 241, 0.25)',
-            position: 'relative'
-          }}>
-            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-              <span className="badge badge-amber" style={{ marginBottom: '0.5rem' }}>Real Campus Scenario</span>
-              <h2>How Aditya & Ananya Exchanged Skills</h2>
-            </div>
-
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr auto 1fr',
-              gap: '2rem',
-              alignItems: 'center'
-            }}>
-              {/* Student A: Aditya */}
-              <div style={{
-                background: 'rgba(0, 0, 0, 0.3)',
-                padding: '1.5rem',
-                borderRadius: '16px',
-                border: '1px solid var(--border-glass)'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                  <img
-                    src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150"
-                    alt="Aditya"
-                    style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }}
-                  />
-                  <div>
-                    <h4 style={{ color: '#fff' }}>Aditya Verma</h4>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>NIT Trichy • CSE</span>
-                  </div>
-                </div>
-                <div style={{ marginBottom: '0.75rem' }}>
-                  <span style={{ fontSize: '0.75rem', color: '#34d399', fontWeight: '700' }}>TEACHES (+10 Coins):</span>
-                  <div style={{ marginTop: '0.25rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                    <span className="badge badge-emerald">Python (Expert)</span>
-                    <span className="badge badge-emerald">React.js (Advanced)</span>
-                  </div>
-                </div>
-                <div>
-                  <span style={{ fontSize: '0.75rem', color: '#22d3ee', fontWeight: '700' }}>WANTS TO LEARN:</span>
-                  <div style={{ marginTop: '0.25rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                    <span className="badge badge-cyan">Figma</span>
-                    <span className="badge badge-cyan">UI/UX Design</span>
-                  </div>
+          <div className="faq-list">
+            {faqItems.map((item, idx) => (
+              <div key={idx} className={`faq-item ${openFaq === idx ? 'open' : ''}`}>
+                <button
+                  type="button"
+                  className="faq-question"
+                  onClick={() => setOpenFaq(openFaq === idx ? -1 : idx)}
+                >
+                  <span>{item.q}</span>
+                  <span className="faq-icon">
+                    <Plus size={16} />
+                  </span>
+                </button>
+                <div className="faq-answer">
+                  <p>{item.a}</p>
                 </div>
               </div>
-
-              {/* Center Match Score Ring */}
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  width: '90px',
-                  height: '90px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #10b981, #06b6d4)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#fff',
-                  boxShadow: '0 0 25px rgba(16, 185, 129, 0.4)',
-                  margin: '0 auto 0.75rem'
-                }}>
-                  <span style={{ fontSize: '1.35rem', fontWeight: '800', lineHeight: 1 }}>96%</span>
-                  <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', fontWeight: '700' }}>Match</span>
-                </div>
-                <div style={{ fontSize: '0.8rem', color: '#cbd5e1', fontWeight: '600' }}>
-                  ⚡ Perfect Bilateral Swap!
-                </div>
-              </div>
-
-              {/* Student B: Ananya */}
-              <div style={{
-                background: 'rgba(0, 0, 0, 0.3)',
-                padding: '1.5rem',
-                borderRadius: '16px',
-                border: '1px solid var(--border-glass)'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                  <img
-                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
-                    alt="Ananya"
-                    style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }}
-                  />
-                  <div>
-                    <h4 style={{ color: '#fff' }}>Ananya Sharma</h4>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>NIT Trichy • Design</span>
-                  </div>
-                </div>
-                <div style={{ marginBottom: '0.75rem' }}>
-                  <span style={{ fontSize: '0.75rem', color: '#34d399', fontWeight: '700' }}>TEACHES (+10 Coins):</span>
-                  <div style={{ marginTop: '0.25rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                    <span className="badge badge-emerald">Figma (Expert)</span>
-                    <span className="badge badge-emerald">UI/UX (Advanced)</span>
-                  </div>
-                </div>
-                <div>
-                  <span style={{ fontSize: '0.75rem', color: '#22d3ee', fontWeight: '700' }}>WANTS TO LEARN:</span>
-                  <div style={{ marginTop: '0.25rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                    <span className="badge badge-cyan">Python</span>
-                    <span className="badge badge-cyan">React.js</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Skills Catalog Preview */}
-      <section style={{ padding: '0 0 6rem' }}>
-        <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem' }}>
-            <div>
-              <span className="badge badge-indigo" style={{ marginBottom: '0.5rem' }}>Popular Skills</span>
-              <h2>Explore Skills in Demand</h2>
-            </div>
-            <Link to="/discover" className="btn btn-secondary btn-sm">
-              View All Skills Catalog <ArrowRight size={14} />
-            </Link>
-          </div>
-
-          <div className="grid-4">
-            {popularSkills.map(skill => (
-              <SkillCard key={skill._id} skill={skill} onSelect={() => navigate(`/discover?search=${skill.name}`)} />
             ))}
           </div>
         </div>
