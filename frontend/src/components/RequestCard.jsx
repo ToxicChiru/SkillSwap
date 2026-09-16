@@ -20,7 +20,7 @@ export const RequestCard = ({ request, type, onRespond, onSchedule, onCancel }) 
             style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover' }}
           />
           <div>
-            <h4 style={{ fontSize: '1rem', color: '#fff' }}>{partner?.name}</h4>
+            <h4 style={{ fontSize: '1rem', color: 'var(--text)' }}>{partner?.name}</h4>
             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
               {partner?.college} • {partner?.branch}
             </span>
@@ -36,10 +36,10 @@ export const RequestCard = ({ request, type, onRespond, onSchedule, onCancel }) 
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        background: 'rgba(0, 0, 0, 0.25)',
+        background: 'var(--surface-secondary)',
         padding: '0.75rem 1rem',
-        borderRadius: '10px',
-        border: '1px solid var(--border-glass)',
+        borderRadius: 'var(--radius-sm)',
+        border: '1px solid var(--border)',
         marginBottom: '0.85rem',
         fontSize: '0.875rem'
       }}>
@@ -47,7 +47,7 @@ export const RequestCard = ({ request, type, onRespond, onSchedule, onCancel }) 
           <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block' }}>
             {isIncoming ? 'They Teach:' : 'You Teach:'}
           </span>
-          <strong style={{ color: '#22d3ee' }}>{request.skillOffered}</strong>
+          <strong style={{ color: 'var(--accent-cyan)' }}>{request.skillOffered}</strong>
         </div>
 
         <ArrowLeftRight size={16} color="var(--text-muted)" />
@@ -56,7 +56,7 @@ export const RequestCard = ({ request, type, onRespond, onSchedule, onCancel }) 
           <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block' }}>
             {isIncoming ? 'They Learn:' : 'You Learn:'}
           </span>
-          <strong style={{ color: '#818cf8' }}>{request.skillRequested}</strong>
+          <strong style={{ color: 'var(--accent-indigo)' }}>{request.skillRequested}</strong>
         </div>
       </div>
 
@@ -65,9 +65,10 @@ export const RequestCard = ({ request, type, onRespond, onSchedule, onCancel }) 
         <p style={{
           fontSize: '0.825rem',
           color: 'var(--text-secondary)',
-          background: 'rgba(255,255,255,0.02)',
+          background: 'var(--surface-secondary)',
+          border: '1px solid var(--border)',
           padding: '0.65rem',
-          borderRadius: '8px',
+          borderRadius: 'var(--radius-sm)',
           marginBottom: '1rem',
           fontStyle: 'italic'
         }}>

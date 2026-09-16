@@ -61,10 +61,10 @@ export const Matches = () => {
         <div className="glass-panel" style={{
           padding: '1.5rem',
           marginBottom: '2.5rem',
-          background: 'rgba(15, 23, 42, 0.9)',
-          border: '1px solid rgba(6, 182, 212, 0.3)'
+          background: 'var(--surface-secondary)',
+          border: '1px solid var(--border)'
         }}>
-          <h3 style={{ fontSize: '1.15rem', color: '#22d3ee', marginBottom: '0.75rem' }}>
+          <h3 style={{ fontSize: '1.15rem', color: 'var(--accent-cyan)', marginBottom: '0.75rem' }}>
             🧠 Multi-Factor Skill Compatibility Formula:
           </h3>
           <div style={{
@@ -74,29 +74,29 @@ export const Matches = () => {
             textAlign: 'center',
             fontSize: '0.825rem'
           }}>
-            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: '10px' }}>
-              <div style={{ fontWeight: '800', color: '#818cf8', fontSize: '1.2rem' }}>50%</div>
-              <div>Skill Overlap</div>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', padding: '0.75rem', borderRadius: 'var(--radius-sm)' }}>
+              <div style={{ fontWeight: '800', color: 'var(--accent-indigo)', fontSize: '1.2rem' }}>50%</div>
+              <div style={{ fontWeight: '600', color: 'var(--text)' }}>Skill Overlap</div>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Mutual reciprocal interest</div>
             </div>
-            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: '10px' }}>
-              <div style={{ fontWeight: '800', color: '#22d3ee', fontSize: '1.2rem' }}>20%</div>
-              <div>Skill Level</div>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', padding: '0.75rem', borderRadius: 'var(--radius-sm)' }}>
+              <div style={{ fontWeight: '800', color: 'var(--accent-cyan)', fontSize: '1.2rem' }}>20%</div>
+              <div style={{ fontWeight: '600', color: 'var(--text)' }}>Skill Level</div>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Expert / Advanced depth</div>
             </div>
-            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: '10px' }}>
-              <div style={{ fontWeight: '800', color: '#34d399', fontSize: '1.2rem' }}>15%</div>
-              <div>Availability</div>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', padding: '0.75rem', borderRadius: 'var(--radius-sm)' }}>
+              <div style={{ fontWeight: '800', color: 'var(--accent-emerald)', fontSize: '1.2rem' }}>15%</div>
+              <div style={{ fontWeight: '600', color: 'var(--text)' }}>Availability</div>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Matching weekly slots</div>
             </div>
-            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: '10px' }}>
-              <div style={{ fontWeight: '800', color: '#fbbf24', fontSize: '1.2rem' }}>10%</div>
-              <div>College & Branch</div>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', padding: '0.75rem', borderRadius: 'var(--radius-sm)' }}>
+              <div style={{ fontWeight: '800', color: 'var(--accent-amber)', fontSize: '1.2rem' }}>10%</div>
+              <div style={{ fontWeight: '600', color: 'var(--text)' }}>College & Branch</div>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Campus familiarity</div>
             </div>
-            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: '10px' }}>
-              <div style={{ fontWeight: '800', color: '#f43f5e', fontSize: '1.2rem' }}>5%</div>
-              <div>Peer Rating</div>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', padding: '0.75rem', borderRadius: 'var(--radius-sm)' }}>
+              <div style={{ fontWeight: '800', color: 'var(--accent-rose)', fontSize: '1.2rem' }}>5%</div>
+              <div style={{ fontWeight: '600', color: 'var(--text)' }}>Peer Rating</div>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Verified student reviews</div>
             </div>
           </div>

@@ -192,7 +192,7 @@ export const Dashboard = () => {
                 <span className="badge badge-emerald" style={{ marginBottom: '0.25rem' }}>
                   Next Scheduled Session
                 </span>
-                <h3 style={{ fontSize: '1.25rem', color: '#fff' }}>
+                <h3 style={{ fontSize: '1.25rem', color: 'var(--text)' }}>
                   {upcomingSession.skill} Session
                 </h3>
                 <p style={{ fontSize: '0.85rem' }}>
@@ -229,7 +229,7 @@ export const Dashboard = () => {
           {/* Teaching Skills */}
           <div className="glass-panel" style={{ padding: '1.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ fontSize: '1.1rem', color: '#34d399' }}>Skills I Can Teach</h3>
+              <h3 style={{ fontSize: '1.1rem', color: 'var(--accent-emerald)' }}>Skills I Can Teach</h3>
               <Link to={`/profile/${user?._id}`} style={{ fontSize: '0.75rem', color: 'var(--accent-primary)' }}>
                 Edit Skills
               </Link>
@@ -240,9 +240,10 @@ export const Dashboard = () => {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  background: 'rgba(0, 0, 0, 0.2)',
+                  background: 'var(--surface-secondary)',
+                  border: '1px solid var(--border)',
                   padding: '0.6rem 0.8rem',
-                  borderRadius: '8px'
+                  borderRadius: 'var(--radius-sm)'
                 }}>
                   <span style={{ fontWeight: '600', fontSize: '0.875rem' }}>{s.name}</span>
                   <span className="badge badge-emerald">{s.level}</span>
@@ -254,7 +255,7 @@ export const Dashboard = () => {
           {/* Learning Wishlist */}
           <div className="glass-panel" style={{ padding: '1.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ fontSize: '1.1rem', color: '#22d3ee' }}>Skills I Want to Learn</h3>
+              <h3 style={{ fontSize: '1.1rem', color: 'var(--accent-cyan)' }}>Skills I Want to Learn</h3>
               <Link to={`/profile/${user?._id}`} style={{ fontSize: '0.75rem', color: 'var(--accent-primary)' }}>
                 Edit Wishlist
               </Link>
@@ -265,9 +266,10 @@ export const Dashboard = () => {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  background: 'rgba(0, 0, 0, 0.2)',
+                  background: 'var(--surface-secondary)',
+                  border: '1px solid var(--border)',
                   padding: '0.6rem 0.8rem',
-                  borderRadius: '8px'
+                  borderRadius: 'var(--radius-sm)'
                 }}>
                   <span style={{ fontWeight: '600', fontSize: '0.875rem' }}>{s.name}</span>
                   <span className="badge badge-cyan">{s.priority} Priority</span>

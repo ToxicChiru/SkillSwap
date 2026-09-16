@@ -115,12 +115,12 @@ export const Wallet = () => {
           position: 'relative'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: '0.85rem', color: '#fcd34d', fontWeight: '700', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.85rem', color: 'var(--accent-amber)', fontWeight: '700', textTransform: 'uppercase' }}>
               Available Balance
             </span>
             <span style={{ fontSize: '1.75rem' }}>🪙</span>
           </div>
-          <div style={{ fontSize: '3rem', fontWeight: '800', color: '#fbbf24', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}>
+          <div style={{ fontSize: '3rem', fontWeight: '800', color: 'var(--accent-amber)', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}>
             {wallet?.balance ?? 50}
           </div>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
@@ -131,12 +131,12 @@ export const Wallet = () => {
         {/* Total Earned */}
         <div className="glass-panel" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: '0.85rem', color: '#34d399', fontWeight: '700', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.85rem', color: 'var(--accent-emerald)', fontWeight: '700', textTransform: 'uppercase' }}>
               Total Coins Earned
             </span>
-            <ArrowDownLeft size={24} color="#10b981" />
+            <ArrowDownLeft size={24} color="var(--accent-emerald)" />
           </div>
-          <div style={{ fontSize: '3rem', fontWeight: '800', color: '#34d399', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}>
+          <div style={{ fontSize: '3rem', fontWeight: '800', color: 'var(--accent-emerald)', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}>
             +{wallet?.totalEarned || 0}
           </div>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
@@ -147,12 +147,12 @@ export const Wallet = () => {
         {/* Total Spent */}
         <div className="glass-panel" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: '0.85rem', color: '#fb7185', fontWeight: '700', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.85rem', color: 'var(--accent-rose)', fontWeight: '700', textTransform: 'uppercase' }}>
               Total Coins Spent
             </span>
-            <ArrowUpRight size={24} color="#f43f5e" />
+            <ArrowUpRight size={24} color="var(--accent-rose)" />
           </div>
-          <div style={{ fontSize: '3rem', fontWeight: '800', color: '#fb7185', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}>
+          <div style={{ fontSize: '3rem', fontWeight: '800', color: 'var(--accent-rose)', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}>
             -{wallet?.totalSpent || 0}
           </div>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
@@ -165,15 +165,16 @@ export const Wallet = () => {
       <div className="glass-panel" style={{
         padding: '1.5rem 2rem',
         marginBottom: '2.5rem',
-        background: 'rgba(15, 23, 42, 0.5)',
-        border: '1px solid var(--border-glass)'
+        background: 'var(--surface-secondary)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius-md)'
       }}>
         <h3 style={{ fontSize: '1.15rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Info size={18} color="var(--accent-cyan)" /> How SkillCoins Operate:
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', fontSize: '0.875rem' }}>
           <div>
-            <strong style={{ color: '#34d399', display: 'block', marginBottom: '0.25rem' }}>
+            <strong style={{ color: 'var(--accent-emerald)', display: 'block', marginBottom: '0.25rem' }}>
               🎓 1 Hour of Teaching = +10 Coins
             </strong>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
@@ -181,7 +182,7 @@ export const Wallet = () => {
             </p>
           </div>
           <div>
-            <strong style={{ color: '#f43f5e', display: 'block', marginBottom: '0.25rem' }}>
+            <strong style={{ color: 'var(--accent-rose)', display: 'block', marginBottom: '0.25rem' }}>
               📖 1 Hour of Learning = -10 Coins
             </strong>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
@@ -189,7 +190,7 @@ export const Wallet = () => {
             </p>
           </div>
           <div>
-            <strong style={{ color: '#fbbf24', display: 'block', marginBottom: '0.25rem' }}>
+            <strong style={{ color: 'var(--accent-amber)', display: 'block', marginBottom: '0.25rem' }}>
               🎁 +50 Welcome Bonus
             </strong>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
@@ -211,7 +212,7 @@ export const Wallet = () => {
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid var(--border-glass)', textAlign: 'left', color: 'var(--text-muted)' }}>
+                <tr style={{ borderBottom: '1px solid var(--border)', textAlign: 'left', color: 'var(--text-muted)' }}>
                   <th style={{ padding: '0.75rem 1rem' }}>Type</th>
                   <th style={{ padding: '0.75rem 1rem' }}>Reason / Session</th>
                   <th style={{ padding: '0.75rem 1rem' }}>Date</th>
@@ -221,7 +222,7 @@ export const Wallet = () => {
               </thead>
               <tbody>
                 {wallet?.transactions?.map((t, idx) => (
-                  <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                  <tr key={idx} style={{ borderBottom: '1px solid var(--border)' }}>
                     <td style={{ padding: '1rem' }}>
                       <span className={`badge ${
                         t.type === 'Earned' ? 'badge-emerald' :
@@ -230,7 +231,7 @@ export const Wallet = () => {
                         {t.type}
                       </span>
                     </td>
-                    <td style={{ padding: '1rem', fontWeight: '600', color: '#fff' }}>
+                    <td style={{ padding: '1rem', fontWeight: '600', color: 'var(--text)' }}>
                       {t.reason}
                     </td>
                     <td style={{ padding: '1rem', color: 'var(--text-muted)' }}>
@@ -240,11 +241,11 @@ export const Wallet = () => {
                       padding: '1rem',
                       textAlign: 'right',
                       fontWeight: '700',
-                      color: t.type === 'Spent' ? '#fb7185' : '#34d399'
+                      color: t.type === 'Spent' ? 'var(--accent-rose)' : 'var(--accent-emerald)'
                     }}>
                       {t.type === 'Spent' ? `-${t.amount}` : `+${t.amount}`} 🪙
                     </td>
-                    <td style={{ padding: '1rem', textAlign: 'right', fontWeight: '700', color: '#fbbf24' }}>
+                    <td style={{ padding: '1rem', textAlign: 'right', fontWeight: '700', color: 'var(--accent-amber)' }}>
                       {t.balanceAfter} 🪙
                     </td>
                   </tr>

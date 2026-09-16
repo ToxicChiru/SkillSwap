@@ -37,9 +37,10 @@ export const SessionCard = ({ session, onComplete, onReview }) => {
         display: 'flex',
         alignItems: 'center',
         gap: '0.75rem',
-        background: 'rgba(0, 0, 0, 0.2)',
+        background: 'var(--surface-secondary)',
+        border: '1px solid var(--border)',
         padding: '0.65rem 0.85rem',
-        borderRadius: '10px',
+        borderRadius: 'var(--radius-sm)',
         marginBottom: '1rem'
       }}>
         <img
@@ -48,7 +49,7 @@ export const SessionCard = ({ session, onComplete, onReview }) => {
           style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }}
         />
         <div>
-          <div style={{ fontSize: '0.85rem', fontWeight: '700', color: '#fff' }}>
+          <div style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--text)' }}>
             {partner?.name}
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
@@ -60,10 +61,10 @@ export const SessionCard = ({ session, onComplete, onReview }) => {
       {/* Date & Time */}
       <div style={{ display: 'flex', gap: '1rem', fontSize: '0.825rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-          <Calendar size={15} color="#818cf8" /> {sessionDate}
+          <Calendar size={15} color="var(--accent-indigo)" /> {sessionDate}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-          <Clock size={15} color="#22d3ee" /> {session.startTime} - {session.endTime}
+          <Clock size={15} color="var(--accent-cyan)" /> {session.startTime} - {session.endTime}
         </div>
       </div>
 

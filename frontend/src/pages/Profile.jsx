@@ -210,15 +210,15 @@ export const Profile = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                background: 'rgba(255,255,255,0.03)',
+                background: 'var(--surface-secondary)',
                 padding: '0.5rem 0.85rem',
-                borderRadius: '10px',
-                border: '1px solid var(--border-glass)'
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border)'
               }}
             >
               <span style={{ fontSize: '1.25rem' }}>{badge.icon}</span>
               <div>
-                <strong style={{ fontSize: '0.85rem', display: 'block', color: '#fff' }}>{badge.name}</strong>
+                <strong style={{ fontSize: '0.85rem', display: 'block', color: 'var(--text)' }}>{badge.name}</strong>
                 <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{badge.description}</span>
               </div>
             </div>
@@ -230,7 +230,7 @@ export const Profile = () => {
       <div className="grid-2" style={{ marginBottom: '2.5rem' }}>
         {/* Teaching Skills */}
         <div className="glass-panel" style={{ padding: '1.75rem' }}>
-          <h3 style={{ color: '#34d399', fontSize: '1.2rem', marginBottom: '0.5rem' }}>
+          <h3 style={{ color: 'var(--accent-emerald)', fontSize: '1.2rem', marginBottom: '0.5rem' }}>
             Skills I Can Teach (+10 Coins / hr)
           </h3>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
@@ -243,12 +243,13 @@ export const Profile = () => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                background: 'rgba(0,0,0,0.25)',
+                background: 'var(--surface-secondary)',
+                border: '1px solid var(--border)',
                 padding: '0.75rem 1rem',
-                borderRadius: '10px'
+                borderRadius: 'var(--radius-sm)'
               }}>
                 <div>
-                  <strong style={{ color: '#fff' }}>{s.name}</strong>
+                  <strong style={{ color: 'var(--text)' }}>{s.name}</strong>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>{s.category}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -292,7 +293,7 @@ export const Profile = () => {
 
         {/* Learning Wishlist */}
         <div className="glass-panel" style={{ padding: '1.75rem' }}>
-          <h3 style={{ color: '#22d3ee', fontSize: '1.2rem', marginBottom: '0.5rem' }}>
+          <h3 style={{ color: 'var(--accent-cyan)', fontSize: '1.2rem', marginBottom: '0.5rem' }}>
             Skills I Want to Learn
           </h3>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
@@ -305,12 +306,13 @@ export const Profile = () => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                background: 'rgba(0,0,0,0.25)',
+                background: 'var(--surface-secondary)',
+                border: '1px solid var(--border)',
                 padding: '0.75rem 1rem',
-                borderRadius: '10px'
+                borderRadius: 'var(--radius-sm)'
               }}>
                 <div>
-                  <strong style={{ color: '#fff' }}>{s.name}</strong>
+                  <strong style={{ color: 'var(--text)' }}>{s.name}</strong>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>{s.category}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -356,10 +358,10 @@ export const Profile = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {reviews.map((rev, idx) => (
               <div key={idx} style={{
-                background: 'rgba(0, 0, 0, 0.25)',
+                background: 'var(--surface-secondary)',
                 padding: '1.25rem',
-                borderRadius: '12px',
-                border: '1px solid var(--border-glass)'
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border)'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -369,13 +371,13 @@ export const Profile = () => {
                       style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }}
                     />
                     <div>
-                      <strong style={{ color: '#fff' }}>{rev.reviewer?.name}</strong>
+                      <strong style={{ color: 'var(--text)' }}>{rev.reviewer?.name}</strong>
                       <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>
                         {rev.reviewer?.college} • Topic: {rev.skill}
                       </span>
                     </div>
                   </div>
-                  <div style={{ color: '#fbbf24', fontWeight: '700', fontSize: '0.95rem' }}>
+                  <div style={{ color: 'var(--accent-amber)', fontWeight: '700', fontSize: '0.95rem' }}>
                     ⭐ {rev.overallRating} / 5.0
                   </div>
                 </div>

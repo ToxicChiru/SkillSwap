@@ -14,6 +14,7 @@
 
   /* SkillSwap Brand Accents (Understated, non-saturated) */
   --accent-indigo: #4f46e5;
+  --accent-cyan: #0284c7;
   --accent-emerald: #059669;
   --accent-amber: #d97706;
   --accent-rose: #e11d48;
@@ -57,6 +58,7 @@
   --accent-invert: #111111;
 
   --accent-indigo: #818cf8;
+  --accent-cyan: #38bdf8;
   --accent-emerald: #34d399;
   --accent-amber: #fbbf24;
   --accent-rose: #fb7185;

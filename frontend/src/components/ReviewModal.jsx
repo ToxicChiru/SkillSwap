@@ -84,10 +84,10 @@ export const ReviewModal = ({ session, onClose, onSuccess }) => {
         <form onSubmit={handleSubmit}>
           {/* Criteria Ratings */}
           <div style={{
-            background: 'rgba(0, 0, 0, 0.25)',
+            background: 'var(--surface-secondary)',
             padding: '1rem',
-            borderRadius: '12px',
-            border: '1px solid var(--border-glass)',
+            borderRadius: 'var(--radius-sm)',
+            border: '1px solid var(--border)',
             marginBottom: '1.25rem'
           }}>
             <StarPicker label="Subject Knowledge & Clarity" value={knowledge} onChange={setKnowledge} />

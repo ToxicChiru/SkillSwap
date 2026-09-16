@@ -159,7 +159,7 @@ export const Admin = () => {
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid var(--border-glass)', textAlign: 'left', color: 'var(--text-muted)' }}>
+                <tr style={{ borderBottom: '1px solid var(--border)', textAlign: 'left', color: 'var(--text-muted)' }}>
                   <th style={{ padding: '0.6rem' }}>Student</th>
                   <th style={{ padding: '0.6rem' }}>Role</th>
                   <th style={{ padding: '0.6rem' }}>Coins</th>
@@ -169,9 +169,9 @@ export const Admin = () => {
               </thead>
               <tbody>
                 {users.map(u => (
-                  <tr key={u._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                  <tr key={u._id} style={{ borderBottom: '1px solid var(--border)' }}>
                     <td style={{ padding: '0.75rem 0.6rem' }}>
-                      <strong style={{ color: '#fff', display: 'block' }}>{u.name}</strong>
+                      <strong style={{ color: 'var(--text)', display: 'block' }}>{u.name}</strong>
                       <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{u.email}</span>
                     </td>
                     <td style={{ padding: '0.75rem 0.6rem' }}>
@@ -179,7 +179,7 @@ export const Admin = () => {
                         {u.role}
                       </span>
                     </td>
-                    <td style={{ padding: '0.75rem 0.6rem', fontWeight: '700', color: '#fbbf24' }}>
+                    <td style={{ padding: '0.75rem 0.6rem', fontWeight: '700', color: 'var(--accent-amber)' }}>
                       {u.skillCoins}
                     </td>
                     <td style={{ padding: '0.75rem 0.6rem' }}>

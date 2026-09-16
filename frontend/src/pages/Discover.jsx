@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { SkillCard } from '../components/SkillCard';
 import { SwapModal } from '../components/SwapModal';
-import { Search, Filter, Users, BookOpen, Star, ArrowLeftRight } from 'lucide-react';
+import { Search, Filter, Users, BookOpen, Star, ArrowLeftRight, UserCheck } from 'lucide-react';
 
 export const Discover = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -91,10 +91,10 @@ export const Discover = () => {
 
         {/* View Mode Toggle */}
         <div style={{
-          background: 'rgba(15, 23, 42, 0.7)',
+          background: 'var(--surface-secondary)',
           padding: '0.35rem',
-          borderRadius: '12px',
-          border: '1px solid var(--border-glass)',
+          borderRadius: 'var(--radius-sm)',
+          border: '1px solid var(--border)',
           display: 'flex',
           gap: '0.35rem'
         }}>
@@ -165,7 +165,11 @@ export const Discover = () => {
             </div>
           ) : (
             students.map(student => (
-              <div key={student._id} className="glass-panel glass-panel-hover" style={{ padding: '1.5rem' }}>
+              <div
+                key={student._id}
+                className="glass-panel glass-panel-hover"
+                style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}
+              >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                   <img
                     src={student.profileImage || `https://api.dicebear.com/7.x/bottts/svg?seed=${student.name}`}
@@ -173,13 +177,13 @@ export const Discover = () => {
                     style={{ width: '52px', height: '52px', borderRadius: '14px', objectFit: 'cover' }}
                   />
                   <div>
-                    <h3 style={{ fontSize: '1.1rem', color: '#fff' }}>{student.name}</h3>
+                    <h3 style={{ fontSize: '1.1rem', color: 'var(--text)' }}>{student.name}</h3>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                       {student.college} • {student.branch}
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '2px' }}>
-                      <Star size={13} fill="#fbbf24" color="#fbbf24" />
-                      <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#fbbf24' }}>
+                      <Star size={13} fill="var(--accent-amber)" color="var(--accent-amber)" />
+                      <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--accent-amber)' }}>
                         {student.rating?.toFixed(1) || '5.0'}
                       </span>
                       <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
@@ -195,7 +199,7 @@ export const Discover = () => {
 
                 {/* Teaching Skills */}
                 <div style={{ marginBottom: '0.75rem' }}>
-                  <span style={{ fontSize: '0.7rem', color: '#34d399', fontWeight: '700', textTransform: 'uppercase' }}>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--accent-emerald)', fontWeight: '700', textTransform: 'uppercase' }}>
                     Can Teach (+10 Coins):
                   </span>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginTop: '0.25rem' }}>
@@ -209,7 +213,7 @@ export const Discover = () => {
 
                 {/* Wants to learn */}
                 <div style={{ marginBottom: '1.25rem' }}>
-                  <span style={{ fontSize: '0.7rem', color: '#22d3ee', fontWeight: '700', textTransform: 'uppercase' }}>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--accent-cyan)', fontWeight: '700', textTransform: 'uppercase' }}>
                     Wants To Learn:
                   </span>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginTop: '0.25rem' }}>
@@ -222,15 +226,33 @@ export const Discover = () => {
                 </div>
 
                 {/* Actions */}
-                {isAuthenticated && student._id !== user?._id && (
-                  <button
-                    onClick={() => setSelectedPartner(student)}
-                    className="btn btn-primary btn-sm"
-                    style={{ width: '100%' }}
-                  >
-                    <ArrowLeftRight size={14} /> Propose SkillSwap
-                  </button>
-                )}
+                <div style={{ marginTop: 'auto', paddingTop: '0.5rem' }}>
+                  {isAuthenticated && student._id !== user?._id ? (
+                    <button
+                      onClick={() => setSelectedPartner(student)}
+                      className="btn btn-primary btn-sm"
+                      style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
+                    >
+                      <ArrowLeftRight size={14} /> Propose SkillSwap
+                    </button>
+                  ) : student._id === user?._id ? (
+                    <Link
+                      to="/profile"
+                      className="btn btn-secondary btn-sm"
+                      style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
+                    >
+                      <UserCheck size={14} /> You (Your Profile)
+                    </Link>
+                  ) : (
+                    <Link
+                      to="/login"
+                      className="btn btn-secondary btn-sm"
+                      style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    >
+                      Login to Propose
+                    </Link>
+                  )}
+                </div>
               </div>
             ))
           )}
