@@ -115,19 +115,21 @@ export const Discover = () => {
 
       {/* Categories Bar (for Skills View) */}
       {viewMode === 'skills' && (
-        <div style={{
-          display: 'flex',
-          gap: '0.5rem',
-          overflowX: 'auto',
-          paddingBottom: '1rem',
-          marginBottom: '2.5rem'
-        }}>
+        <div 
+          className="no-scrollbar"
+          style={{
+            display: 'flex',
+            gap: '0.5rem',
+            flexWrap: 'wrap',
+            marginBottom: '2.5rem'
+          }}
+        >
           {categories.map((cat, idx) => (
             <button
               key={idx}
               onClick={() => setActiveCategory(cat)}
-              className={`btn btn-sm ${activeCategory === cat ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ borderRadius: '9999px', fontSize: '0.825rem' }}
+              className={`btn btn-sm btn-pill ${activeCategory === cat ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ fontSize: '0.825rem' }}
             >
               {cat}
             </button>
