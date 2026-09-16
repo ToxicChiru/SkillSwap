@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
@@ -12,7 +12,8 @@ import {
   Plus, 
   ShieldCheck, 
   Users, 
-  Clock 
+  Clock,
+  ChevronDown
 } from 'lucide-react';
 
 export const Home = () => {
@@ -21,6 +22,73 @@ export const Home = () => {
 
   // FAQ open state
   const [openFaq, setOpenFaq] = useState(0);
+
+  // Scroll Progress Percentage (0 - 100)
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Scroll-linked 3D Mockup Perspective Tilt
+  const [mockupTransform, setMockupTransform] = useState({
+    rotateX: 14,
+    scale: 0.93,
+    translateY: 28
+  });
+
+  // Listen to scroll to drive 3D Mockup unfolding tilt and hairline scrollbar
+  useEffect(() => {
+    let rafId;
+    const handleScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+      setScrollProgress(progress);
+
+      // Smoothly unfold mockup from 14deg tilt down to 0deg as user scrolls down the hero
+      const factor = Math.min(1, Math.max(0, scrollY / 440));
+      const rotateX = 14 * (1 - factor);
+      const scale = 0.93 + (0.07 * factor);
+      const translateY = 28 * (1 - factor);
+
+      setMockupTransform({ rotateX, scale, translateY });
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(handleScroll);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // IntersectionObserver to trigger smooth scroll reveal transitions
+  useEffect(() => {
+    const elements = document.querySelectorAll(
+      '.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale'
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+      }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleQuickDemo = async (email) => {
     try {
@@ -56,6 +124,11 @@ export const Home = () => {
 
   return (
     <div style={{ position: 'relative' }}>
+      {/* Top Viewport Hairline Scroll Progress Bar */}
+      <div className="scroll-progress-container">
+        <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      </div>
+
       {/* Background ambient glow */}
       <div className="glow" style={{ top: '-100px', left: '50%', transform: 'translateX(-50%)' }} />
 
@@ -108,7 +181,7 @@ export const Home = () => {
               alignItems: 'center',
               gap: '0.6rem',
               boxShadow: 'var(--shadow-subtle)',
-              marginBottom: '4.5rem',
+              marginBottom: '2rem',
               flexWrap: 'wrap',
               justifyContent: 'center'
             }}>
@@ -147,9 +220,26 @@ export const Home = () => {
             </div>
           )}
 
-          {/* Large Elevated CSS Product Mockup */}
-          <div className="hero-mockup-wrapper">
-            <div className="mockup">
+          {/* Animated Scroll Down Indicator */}
+          <div
+            className="scroll-indicator"
+            onClick={() => window.scrollTo({ top: 680, behavior: 'smooth' })}
+            title="Scroll to explore"
+          >
+            <div className="scroll-indicator-mouse">
+              <div className="scroll-indicator-wheel" />
+            </div>
+            <span>Scroll to explore</span>
+          </div>
+
+          {/* Large Elevated CSS Product Mockup with Scroll-Linked 3D Transition */}
+          <div className="mockup-3d-stage">
+            <div
+              className="mockup mockup-3d-card"
+              style={{
+                transform: `rotateX(${mockupTransform.rotateX}deg) scale(${mockupTransform.scale}) translateY(${mockupTransform.translateY}px)`
+              }}
+            >
               {/* Browser Header */}
               <div className="mockup-header">
                 <div className="mockup-controls">
@@ -259,31 +349,31 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Understated Monochrome Logo Cloud */}
-      <section className="logo-cloud-section">
+      {/* Understated Monochrome Logo Cloud with Scroll Reveal */}
+      <section className="logo-cloud-section scroll-reveal">
         <div className="container">
           <div className="logo-cloud-label">
             Adopted by students across leading academic institutions
           </div>
           <div className="logo-cloud-grid">
-            <span className="logo-item">MIT</span>
-            <span className="logo-item">STANFORD</span>
-            <span className="logo-item">UC BERKELEY</span>
-            <span className="logo-item">OXFORD</span>
-            <span className="logo-item">CAMBRIDGE</span>
-            <span className="logo-item">IIT</span>
-            <span className="logo-item">ETH ZÜRICH</span>
+            <span className="logo-item scroll-reveal-scale stagger-1">MIT</span>
+            <span className="logo-item scroll-reveal-scale stagger-2">STANFORD</span>
+            <span className="logo-item scroll-reveal-scale stagger-3">UC BERKELEY</span>
+            <span className="logo-item scroll-reveal-scale stagger-4">OXFORD</span>
+            <span className="logo-item scroll-reveal-scale stagger-5">CAMBRIDGE</span>
+            <span className="logo-item scroll-reveal-scale stagger-6">IIT</span>
+            <span className="logo-item scroll-reveal-scale stagger-6">ETH ZÜRICH</span>
           </div>
         </div>
       </section>
 
-      {/* Alternating Two-Column Features */}
+      {/* Alternating Two-Column Features with Scroll-Driven Reveal */}
       <section className="section-large">
         <div className="container">
           <div className="features-container">
             {/* Feature 1 */}
-            <div className="feature">
-              <div className="feature-text">
+            <div className="feature scroll-reveal">
+              <div className="feature-text scroll-reveal-left">
                 <span className="eyebrow" style={{ marginBottom: '1rem' }}>
                   Smart Matching
                 </span>
@@ -299,8 +389,8 @@ export const Home = () => {
                 </Link>
               </div>
 
-              <div className="feature-visual">
-                <div className="card" style={{ padding: '2rem' }}>
+              <div className="feature-visual scroll-reveal-right">
+                <div className="card float-hover" style={{ padding: '2rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                     <h4 style={{ fontSize: '1.1rem' }}>Scoring Breakdown</h4>
                     <span className="badge badge-emerald">96% Overall</span>
@@ -313,7 +403,7 @@ export const Home = () => {
                         <strong>50 / 50%</strong>
                       </div>
                       <div style={{ height: '6px', background: 'var(--surface-secondary)', borderRadius: '3px', overflow: 'hidden' }}>
-                        <div style={{ width: '100%', height: '100%', background: 'var(--text)' }} />
+                        <div className="scoring-bar-fill" style={{ '--target-width': '100%' }} />
                       </div>
                     </div>
 
@@ -323,7 +413,7 @@ export const Home = () => {
                         <strong>20 / 20%</strong>
                       </div>
                       <div style={{ height: '6px', background: 'var(--surface-secondary)', borderRadius: '3px', overflow: 'hidden' }}>
-                        <div style={{ width: '100%', height: '100%', background: 'var(--text)' }} />
+                        <div className="scoring-bar-fill" style={{ '--target-width': '100%' }} />
                       </div>
                     </div>
 
@@ -333,7 +423,7 @@ export const Home = () => {
                         <strong>15 / 15%</strong>
                       </div>
                       <div style={{ height: '6px', background: 'var(--surface-secondary)', borderRadius: '3px', overflow: 'hidden' }}>
-                        <div style={{ width: '100%', height: '100%', background: 'var(--text)' }} />
+                        <div className="scoring-bar-fill" style={{ '--target-width': '100%' }} />
                       </div>
                     </div>
 
@@ -343,7 +433,7 @@ export const Home = () => {
                         <strong>10 / 10%</strong>
                       </div>
                       <div style={{ height: '6px', background: 'var(--surface-secondary)', borderRadius: '3px', overflow: 'hidden' }}>
-                        <div style={{ width: '100%', height: '100%', background: 'var(--text)' }} />
+                        <div className="scoring-bar-fill" style={{ '--target-width': '100%' }} />
                       </div>
                     </div>
                   </div>
@@ -352,8 +442,8 @@ export const Home = () => {
             </div>
 
             {/* Feature 2 (Reverse) */}
-            <div className="feature reverse">
-              <div className="feature-text">
+            <div className="feature reverse scroll-reveal">
+              <div className="feature-text scroll-reveal-right">
                 <span className="eyebrow" style={{ marginBottom: '1rem' }}>
                   SkillCoin Economy
                 </span>
@@ -369,8 +459,8 @@ export const Home = () => {
                 </Link>
               </div>
 
-              <div className="feature-visual">
-                <div className="card" style={{ padding: '2rem' }}>
+              <div className="feature-visual scroll-reveal-left">
+                <div className="card float-hover" style={{ padding: '2rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
                     <h4 style={{ fontSize: '1.1rem' }}>Recent Ledger Activity</h4>
                     <span className="coin-pill">🪙 Balance: 120</span>
@@ -395,8 +485,8 @@ export const Home = () => {
             </div>
 
             {/* Feature 3 */}
-            <div className="feature">
-              <div className="feature-text">
+            <div className="feature scroll-reveal">
+              <div className="feature-text scroll-reveal-left">
                 <span className="eyebrow" style={{ marginBottom: '1rem' }}>
                   Structured Sessions
                 </span>
@@ -412,8 +502,8 @@ export const Home = () => {
                 </Link>
               </div>
 
-              <div className="feature-visual">
-                <div className="card" style={{ padding: '2rem' }}>
+              <div className="feature-visual scroll-reveal-right">
+                <div className="card float-hover" style={{ padding: '2rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                     <div>
                       <span className="badge badge-indigo" style={{ marginBottom: '0.35rem' }}>Scheduled Session</span>
@@ -442,10 +532,10 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Minimalist FAQ Accordion Section */}
-      <section className="faq-section">
+      {/* Minimalist FAQ Accordion Section with Scroll Reveal */}
+      <section className="faq-section scroll-reveal">
         <div className="container faq-container">
-          <div className="faq-header">
+          <div className="faq-header scroll-reveal-scale">
             <span className="eyebrow" style={{ marginBottom: '1rem' }}>
               Common Inquiries
             </span>
@@ -457,7 +547,10 @@ export const Home = () => {
 
           <div className="faq-list">
             {faqItems.map((item, idx) => (
-              <div key={idx} className={`faq-item ${openFaq === idx ? 'open' : ''}`}>
+              <div 
+                key={idx} 
+                className={`faq-item scroll-reveal stagger-${Math.min(idx + 1, 6)} ${openFaq === idx ? 'open' : ''}`}
+              >
                 <button
                   type="button"
                   className="faq-question"
