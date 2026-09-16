@@ -50,7 +50,8 @@
   will-change: opacity, transform, filter;
 }
 
-.scroll-reveal.is-revealed {
+.scroll-reveal.is-revealed,
+.scroll-reveal[data-revealed="true"] {
   opacity: 1;
   transform: translateY(0);
   filter: blur(0);
@@ -68,7 +69,8 @@
   will-change: opacity, transform, filter;
 }
 
-.scroll-reveal-left.is-revealed {
+.scroll-reveal-left.is-revealed,
+.scroll-reveal-left[data-revealed="true"] {
   opacity: 1;
   transform: translateX(0);
   filter: blur(0);
@@ -85,7 +87,8 @@
   will-change: opacity, transform, filter;
 }
 
-.scroll-reveal-right.is-revealed {
+.scroll-reveal-right.is-revealed,
+.scroll-reveal-right[data-revealed="true"] {
   opacity: 1;
   transform: translateX(0);
   filter: blur(0);
@@ -102,7 +105,8 @@
   will-change: opacity, transform, filter;
 }
 
-.scroll-reveal-scale.is-revealed {
+.scroll-reveal-scale.is-revealed,
+.scroll-reveal-scale[data-revealed="true"] {
   opacity: 1;
   transform: scale(1) translateY(0);
   filter: blur(0);
@@ -181,7 +185,8 @@
   transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
 }
 
-.is-revealed .scoring-bar-fill {
+.is-revealed .scoring-bar-fill,
+[data-revealed="true"] .scoring-bar-fill {
   width: var(--target-width, 100%);
 }
 

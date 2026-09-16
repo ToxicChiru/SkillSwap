@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
@@ -23,15 +23,9 @@ export const Home = () => {
   // FAQ open state
   const [openFaq, setOpenFaq] = useState(0);
 
-  // Scroll Progress Percentage (0 - 100)
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  // Scroll-linked 3D Mockup Perspective Tilt
-  const [mockupTransform, setMockupTransform] = useState({
-    rotateX: 14,
-    scale: 0.93,
-    translateY: 28
-  });
+  // Direct DOM refs for 60/120fps scroll animation without re-rendering the component
+  const progressBarRef = useRef(null);
+  const mockupCardRef = useRef(null);
 
   // Listen to scroll to drive 3D Mockup unfolding tilt and hairline scrollbar
   useEffect(() => {
@@ -40,7 +34,10 @@ export const Home = () => {
       const scrollY = window.scrollY || window.pageYOffset;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
-      setScrollProgress(progress);
+      
+      if (progressBarRef.current) {
+        progressBarRef.current.style.width = `${progress}%`;
+      }
 
       // Smoothly unfold mockup from 14deg tilt down to 0deg as user scrolls down the hero
       const factor = Math.min(1, Math.max(0, scrollY / 440));
@@ -48,7 +45,9 @@ export const Home = () => {
       const scale = 0.93 + (0.07 * factor);
       const translateY = 28 * (1 - factor);
 
-      setMockupTransform({ rotateX, scale, translateY });
+      if (mockupCardRef.current) {
+        mockupCardRef.current.style.transform = `rotateX(${rotateX}deg) scale(${scale}) translateY(${translateY}px)`;
+      }
     };
 
     const onScroll = () => {
@@ -75,12 +74,13 @@ export const Home = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            entry.target.setAttribute('data-revealed', 'true');
             entry.target.classList.add('is-revealed');
           }
         });
       },
       {
-        threshold: 0.1,
+        threshold: 0.08,
         rootMargin: '0px 0px -40px 0px'
       }
     );
@@ -126,7 +126,7 @@ export const Home = () => {
     <div style={{ position: 'relative' }}>
       {/* Top Viewport Hairline Scroll Progress Bar */}
       <div className="scroll-progress-container">
-        <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
+        <div ref={progressBarRef} className="scroll-progress-bar" style={{ width: '0%' }} />
       </div>
 
       {/* Background ambient glow */}
@@ -235,9 +235,10 @@ export const Home = () => {
           {/* Large Elevated CSS Product Mockup with Scroll-Linked 3D Transition */}
           <div className="mockup-3d-stage">
             <div
+              ref={mockupCardRef}
               className="mockup mockup-3d-card"
               style={{
-                transform: `rotateX(${mockupTransform.rotateX}deg) scale(${mockupTransform.scale}) translateY(${mockupTransform.translateY}px)`
+                transform: 'rotateX(14deg) scale(0.93) translateY(28px)'
               }}
             >
               {/* Browser Header */}
@@ -545,11 +546,11 @@ export const Home = () => {
             </p>
           </div>
 
-          <div className="faq-list">
+          <div className="faq-list scroll-reveal">
             {faqItems.map((item, idx) => (
               <div 
                 key={idx} 
-                className={`faq-item scroll-reveal stagger-${Math.min(idx + 1, 6)} ${openFaq === idx ? 'open' : ''}`}
+                className={`faq-item ${openFaq === idx ? 'open' : ''}`}
               >
                 <button
                   type="button"
