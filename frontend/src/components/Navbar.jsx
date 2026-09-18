@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useNotification } from '../context/NotificationContext';
 import { 
+  LayoutDashboard,
   Compass, 
   Sparkles, 
   ArrowLeftRight, 
@@ -15,12 +16,16 @@ import {
   User as UserIcon, 
   LogOut, 
   Sun, 
-  Moon 
+  Moon,
+  Menu,
+  X,
+  Home,
+  ChevronRight
 } from 'lucide-react';
 
 export const Navbar = () => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { toggleTheme, isDark } = useTheme();
   const { notifications, unreadCount, markAllRead } = useNotification();
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,7 +33,11 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const navRef = useRef(null);
+
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -37,82 +46,99 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isActive = (path) => location.pathname === path;
+  // Close menus on route change
+  useEffect(() => {
+    setShowNotifications(false);
+    setShowUserMenu(false);
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Click outside to close menus
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setShowNotifications(false);
+        setShowUserMenu(false);
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const isActive = (path) => {
+    if (path === '/') return location.pathname === '/';
+    return location.pathname.startsWith(path);
+  };
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
+  // Full feature list for authenticated users
+  const authNavItems = [
+    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/discover', label: 'Discover', icon: Compass },
+    { path: '/matches', label: 'Matches', icon: Sparkles },
+    { path: '/requests', label: 'Requests', icon: ArrowLeftRight },
+    { path: '/sessions', label: 'Sessions', icon: Calendar },
+    { path: '/wallet', label: 'Wallet', icon: Coins },
+    { path: '/leaderboard', label: 'Leaderboard', icon: Trophy },
+  ];
+
+  if (isAdmin) {
+    authNavItems.push({
+      path: '/admin',
+      label: 'Admin',
+      icon: ShieldAlert,
+      isAdminBadge: true
+    });
+  }
+
+  // Full feature list for public/guest users to explore
+  const guestNavItems = [
+    { path: '/', label: 'Home', icon: Home },
+    { path: '/discover', label: 'Discover', icon: Compass },
+    { path: '/matches', label: 'Matches', icon: Sparkles },
+    { path: '/requests', label: 'Requests', icon: ArrowLeftRight },
+    { path: '/sessions', label: 'Sessions', icon: Calendar },
+    { path: '/wallet', label: 'Wallet', icon: Coins },
+    { path: '/leaderboard', label: 'Leaderboard', icon: Trophy },
+  ];
+
+  const currentNavItems = isAuthenticated ? authNavItems : guestNavItems;
+
   return (
-    <div className="navbar-wrapper">
+    <div className="navbar-wrapper" ref={navRef}>
       <nav className={`navbar-pill ${scrolled ? 'scrolled' : ''}`}>
         {/* Brand Logo */}
-        <Link to="/" className="nav-logo">
+        <Link to="/" className="nav-logo" title="SkillSwap Home">
           <div className="nav-logo-icon">⚡</div>
           <span className="nav-logo-text">SkillSwap</span>
         </Link>
 
-        {/* Center Navigation Links */}
+        {/* Desktop Navigation Links - Displays ALL features */}
         <div className="nav-links nav-links-desktop">
-          <Link 
-            to="/discover" 
-            className={`nav-link ${isActive('/discover') ? 'active' : ''}`}
-          >
-            <Compass size={15} /> Discover
-          </Link>
-
-          {isAuthenticated && (
-            <>
-              <Link 
-                to="/matches" 
-                className={`nav-link ${isActive('/matches') ? 'active' : ''}`}
+          {currentNavItems.map((item) => {
+            const Icon = item.icon;
+            const active = isActive(item.path);
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`nav-link ${active ? 'active' : ''} ${item.isAdminBadge ? 'nav-link-admin' : ''}`}
+                style={item.isAdminBadge ? { color: 'var(--accent-rose)' } : undefined}
+                title={item.label}
               >
-                <Sparkles size={15} /> Matches
+                <Icon size={14} className="nav-item-icon" />
+                <span className="nav-item-label">{item.label}</span>
               </Link>
-
-              <Link 
-                to="/requests" 
-                className={`nav-link ${isActive('/requests') ? 'active' : ''}`}
-              >
-                <ArrowLeftRight size={15} /> Requests
-              </Link>
-
-              <Link 
-                to="/sessions" 
-                className={`nav-link ${isActive('/sessions') ? 'active' : ''}`}
-              >
-                <Calendar size={15} /> Sessions
-              </Link>
-
-              <Link 
-                to="/wallet" 
-                className={`nav-link ${isActive('/wallet') ? 'active' : ''}`}
-              >
-                <Coins size={15} /> Wallet
-              </Link>
-            </>
-          )}
-
-          <Link 
-            to="/leaderboard" 
-            className={`nav-link ${isActive('/leaderboard') ? 'active' : ''}`}
-          >
-            <Trophy size={15} /> Leaderboard
-          </Link>
-
-          {isAdmin && (
-            <Link 
-              to="/admin" 
-              className={`nav-link ${isActive('/admin') ? 'active' : ''}`}
-              style={{ color: 'var(--accent-rose)' }}
-            >
-              <ShieldAlert size={15} /> Admin
-            </Link>
-          )}
+            );
+          })}
         </div>
 
-        {/* Right Actions: Theme Toggle, Coins, Notifications, Auth */}
+        {/* Right Actions: Theme Toggle, Coins, Notifications, Auth & Mobile Hamburger */}
         <div className="nav-actions">
           {/* Dark / Light Mode Switch */}
           <button
@@ -121,7 +147,7 @@ export const Navbar = () => {
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             aria-label="Toggle theme"
           >
-            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            {isDark ? <Sun size={15} /> : <Moon size={15} />}
           </button>
 
           {isAuthenticated ? (
@@ -138,71 +164,44 @@ export const Navbar = () => {
                   onClick={() => {
                     setShowNotifications(!showNotifications);
                     setShowUserMenu(false);
+                    setMobileMenuOpen(false);
                   }}
                   className="theme-toggle-btn"
                   style={{ position: 'relative' }}
+                  title="Notifications"
                 >
-                  <Bell size={16} />
+                  <Bell size={15} />
                   {unreadCount > 0 && (
-                    <span style={{
-                      position: 'absolute',
-                      top: '-2px',
-                      right: '-2px',
-                      background: 'var(--accent-rose)',
-                      color: '#ffffff',
-                      fontSize: '0.65rem',
-                      fontWeight: '700',
-                      borderRadius: '9999px',
-                      padding: '1px 4px',
-                      lineHeight: 1
-                    }}>
+                    <span className="nav-badge-count">
                       {unreadCount}
                     </span>
                   )}
                 </button>
 
+                {/* Notifications Dropdown */}
                 {showNotifications && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '44px',
-                    right: 0,
-                    width: '300px',
-                    background: 'var(--surface)',
-                    border: '1px solid var(--border)',
-                    borderRadius: '16px',
-                    boxShadow: 'var(--shadow-card)',
-                    padding: '1rem',
-                    zIndex: 200,
-                    animation: 'fadeUp 0.15s ease-out'
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                  <div className="nav-dropdown nav-dropdown-notifications">
+                    <div className="nav-dropdown-header">
                       <span style={{ fontWeight: '600', fontSize: '0.85rem' }}>Notifications</span>
                       {unreadCount > 0 && (
                         <button 
                           onClick={markAllRead}
-                          style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '0.75rem', cursor: 'pointer' }}
+                          className="nav-dropdown-action-btn"
                         >
-                          Mark all as read
+                          Mark all read
                         </button>
                       )}
                     </div>
-                    <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
+                    <div className="nav-notifications-list">
                       {notifications.length === 0 ? (
-                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', padding: '1rem 0' }}>
+                        <p className="nav-empty-state">
                           No notifications yet.
                         </p>
                       ) : (
-                        notifications.slice(0, 5).map(n => (
-                          <div 
-                            key={n._id} 
-                            style={{
-                              padding: '0.5rem',
-                              borderBottom: '1px solid var(--border)',
-                              fontSize: '0.8rem'
-                            }}
-                          >
-                            <div style={{ fontWeight: '600', color: 'var(--text)' }}>{n.title}</div>
-                            <div style={{ color: 'var(--text-secondary)' }}>{n.message}</div>
+                        notifications.slice(0, 6).map(n => (
+                          <div key={n._id} className="nav-notification-item">
+                            <div className="nav-notification-title">{n.title}</div>
+                            <div className="nav-notification-desc">{n.message}</div>
                           </div>
                         ))
                       )}
@@ -217,76 +216,46 @@ export const Navbar = () => {
                   onClick={() => {
                     setShowUserMenu(!showUserMenu);
                     setShowNotifications(false);
+                    setMobileMenuOpen(false);
                   }}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                    padding: 0
-                  }}
+                  className="nav-avatar-btn"
+                  title="Open user menu"
                 >
                   <img 
                     src={user?.profileImage || `https://api.dicebear.com/7.x/bottts/svg?seed=${user?.name || 'student'}`} 
-                    alt={user?.name}
-                    style={{
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '50%',
-                      border: '1px solid var(--border)',
-                      objectFit: 'cover'
-                    }} 
+                    alt={user?.name || 'Student'}
+                    className="nav-avatar-img"
                   />
                 </button>
 
                 {showUserMenu && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '44px',
-                    right: 0,
-                    width: '200px',
-                    background: 'var(--surface)',
-                    border: '1px solid var(--border)',
-                    borderRadius: '16px',
-                    boxShadow: 'var(--shadow-card)',
-                    padding: '0.75rem',
-                    zIndex: 200,
-                    animation: 'fadeUp 0.15s ease-out'
-                  }}>
-                    <div style={{ padding: '0.35rem 0.5rem', borderBottom: '1px solid var(--border)' }}>
-                      <div style={{ fontWeight: '600', fontSize: '0.85rem' }}>{user?.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{user?.college}</div>
+                  <div className="nav-dropdown nav-dropdown-user">
+                    <div className="nav-user-header">
+                      <div className="nav-user-name">{user?.name}</div>
+                      <div className="nav-user-college">{user?.college || user?.email}</div>
+                      <div className="nav-user-coins">🪙 {user?.skillCoins ?? 0} SkillCoins</div>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.5rem' }}>
-                      <Link 
-                        to="/dashboard" 
-                        onClick={() => setShowUserMenu(false)}
-                        style={{ padding: '0.45rem 0.5rem', borderRadius: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}
-                      >
-                        Dashboard
+                    <div className="nav-user-links">
+                      <Link to="/dashboard" onClick={() => setShowUserMenu(false)} className="nav-user-menu-item">
+                        <LayoutDashboard size={14} /> Dashboard
                       </Link>
-                      <Link 
-                        to={`/profile/${user?._id}`} 
-                        onClick={() => setShowUserMenu(false)}
-                        style={{ padding: '0.45rem 0.5rem', borderRadius: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}
-                      >
-                        My Profile
+                      <Link to="/profile" onClick={() => setShowUserMenu(false)} className="nav-user-menu-item">
+                        <UserIcon size={14} /> My Profile
                       </Link>
-                      <button 
-                        onClick={handleLogout}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          textAlign: 'left',
-                          padding: '0.45rem 0.5rem',
-                          borderRadius: '8px',
-                          fontSize: '0.85rem',
-                          color: 'var(--accent-rose)',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Sign Out
+                      <Link to="/wallet" onClick={() => setShowUserMenu(false)} className="nav-user-menu-item">
+                        <Coins size={14} /> Wallet & History
+                      </Link>
+                      <Link to="/sessions" onClick={() => setShowUserMenu(false)} className="nav-user-menu-item">
+                        <Calendar size={14} /> My Sessions
+                      </Link>
+                      {isAdmin && (
+                        <Link to="/admin" onClick={() => setShowUserMenu(false)} className="nav-user-menu-item" style={{ color: 'var(--accent-rose)' }}>
+                          <ShieldAlert size={14} /> Admin Portal
+                        </Link>
+                      )}
+                      <div className="nav-menu-divider" />
+                      <button onClick={handleLogout} className="nav-user-menu-item nav-user-menu-logout">
+                        <LogOut size={14} /> Sign Out
                       </button>
                     </div>
                   </div>
@@ -294,7 +263,7 @@ export const Navbar = () => {
               </div>
             </>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div className="nav-auth-buttons">
               <Link to="/login" className="btn btn-secondary btn-sm btn-pill">
                 Sign In
               </Link>
@@ -303,8 +272,108 @@ export const Navbar = () => {
               </Link>
             </div>
           )}
+
+          {/* Mobile Hamburger Toggle Button */}
+          <button
+            className="theme-toggle-btn nav-mobile-toggle"
+            onClick={() => {
+              setMobileMenuOpen(!mobileMenuOpen);
+              setShowNotifications(false);
+              setShowUserMenu(false);
+            }}
+            title="Toggle Menu"
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
         </div>
       </nav>
+
+      {/* Responsive Mobile / Tablet Navigation Drawer */}
+      {mobileMenuOpen && (
+        <div className="mobile-nav-panel">
+          {isAuthenticated && (
+            <div className="mobile-user-card">
+              <img 
+                src={user?.profileImage || `https://api.dicebear.com/7.x/bottts/svg?seed=${user?.name || 'student'}`} 
+                alt={user?.name}
+                className="mobile-user-avatar"
+              />
+              <div className="mobile-user-info">
+                <div className="mobile-user-name">{user?.name}</div>
+                <div className="mobile-user-college">{user?.college || 'Student'}</div>
+              </div>
+              <div className="mobile-coin-badge">
+                🪙 {user?.skillCoins ?? 0}
+              </div>
+            </div>
+          )}
+
+          <div className="mobile-nav-items-grid">
+            {currentNavItems.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(item.path);
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`mobile-nav-item ${active ? 'active' : ''}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <div className="mobile-nav-item-left">
+                    <div className="mobile-nav-item-icon">
+                      <Icon size={16} />
+                    </div>
+                    <span className="mobile-nav-item-label">{item.label}</span>
+                  </div>
+                  <ChevronRight size={14} className="mobile-nav-item-arrow" />
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="mobile-nav-footer">
+            {isAuthenticated ? (
+              <div className="mobile-auth-actions">
+                <Link 
+                  to="/profile" 
+                  className="btn btn-secondary btn-sm" 
+                  style={{ flex: 1, textAlign: 'center' }}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Profile
+                </Link>
+                <button 
+                  onClick={handleLogout}
+                  className="btn btn-secondary btn-sm"
+                  style={{ color: 'var(--accent-rose)', borderColor: 'rgba(244, 63, 94, 0.3)' }}
+                >
+                  <LogOut size={14} /> Sign Out
+                </button>
+              </div>
+            ) : (
+              <div className="mobile-auth-actions">
+                <Link 
+                  to="/login" 
+                  className="btn btn-secondary btn-sm"
+                  style={{ flex: 1, textAlign: 'center' }}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+                <Link 
+                  to="/register" 
+                  className="btn btn-primary btn-sm"
+                  style={{ flex: 1, textAlign: 'center' }}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Get Started
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
